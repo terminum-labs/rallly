@@ -55,7 +55,7 @@ export function BallotTimeText({
         <span className="flex gap-2">
           {/* Fixed width so the numbers line up down the list. */}
           <span className="min-w-[2ch] text-end tabular-nums">{value.day}</span>
-          <span className="text-muted-foreground">{value.weekday}</span>
+          <span className="text-muted-foreground/70">{value.weekday}</span>
         </span>
       )}
     </span>
