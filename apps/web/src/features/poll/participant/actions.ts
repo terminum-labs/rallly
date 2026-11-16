@@ -248,16 +248,20 @@ export const addParticipantAction = anyUserActionClient
       });
     }
 
-    after(() =>
-      sendNewResponseNotificationEmail({
-        pollId,
-        pollTitle: poll.title,
-        participantName: participant.name,
-        participantEmail: participant.email,
-        note: participant.note,
-        excludeUserId: ctx.user.id,
-      }),
-    );
+    const includesYes = votes.some((vote) => vote.type === "yes");
+    const includesIfNeedBe = votes.some((vote) => vote.type === "ifNeedBe");
+    if (includesYes || !includesIfNeedBe) {
+      after(() =>
+        sendNewResponseNotificationEmail({
+          pollId,
+          pollTitle: poll.title,
+          participantName: participant.name,
+          participantEmail: participant.email,
+          note: participant.note,
+          excludeUserId: ctx.user.id,
+        }),
+      );
+    }
 
     const voteCounts = votes.reduce(
       (acc, { type }) => {
