@@ -108,6 +108,10 @@ import { getBrowserTimeZone } from "@/lib/utils/date-time-utils";
 import { TimeZonePicker } from "./time-zone-picker";
 import { VoteSummary } from "./vote-summary";
 
+function liveAvailabilityVote(vote: BallotVote | undefined) {
+  return vote === "yes" || vote === "no" ? vote : undefined;
+}
+
 /** The hover for the rows a mouse can cycle. */
 const rowHoverClassName: Record<BallotVote | "none", string> = {
   none: "[@media(pointer:fine)]:hover:border-gray-400 dark:[@media(pointer:fine)]:hover:border-gray-500",
@@ -758,7 +762,7 @@ export function AccessibleBallot({
     const count = availableCount({
       entries: ballot.tallies[optionId] ?? [],
       activeResponseId: state.activeResponseId,
-      liveVote,
+      liveVote: liveAvailabilityVote(liveVote),
     });
     return t("screenReaderOptionCount", {
       defaultValue:
@@ -1545,7 +1549,7 @@ export function AccessibleBallot({
                                 ? availableCount({
                                     entries: ballot.tallies[optionId] ?? [],
                                     activeResponseId: state.activeResponseId,
-                                    liveVote: vote,
+                                    liveVote: liveAvailabilityVote(vote),
                                   })
                                 : undefined
                             }
@@ -1705,7 +1709,7 @@ export function AccessibleBallot({
                           ? availableCount({
                               entries: ballot.tallies[optionId] ?? [],
                               activeResponseId: state.activeResponseId,
-                              liveVote: vote,
+                              liveVote: liveAvailabilityVote(vote),
                             })
                           : null;
                         return (
